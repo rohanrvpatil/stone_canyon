@@ -1,6 +1,10 @@
-import styles from "../styles/CategoryIdInput.module.css";
+// main
 import { useState, useRef } from "react";
 
+//styles
+import styles from "../styles/CategoryIdInput.module.css";
+
+// components
 import Chatbot from "./Chatbot";
 
 function CategoryIdInput() {

@@ -1,29 +1,45 @@
 import React, { useState } from "react";
 import styles from "../styles/Chatbot.module.css";
 
+// components
+import ChatbotFlow from "./ChatbotFlow";
+
 interface ChatbotProps {
   size?: number;
 }
 
+interface Message {
+  text: string;
+  isBot: boolean;
+  options?: { text: string; nextId: string }[];
+}
+
 const Chatbot: React.FC<ChatbotProps> = ({ size = 60 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<{ text: string; isBot: boolean }[]>(
-    []
-  );
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [currentNodeId, setCurrentNodeId] = useState("start");
 
   const toggleChat = () => {
     setIsOpen(!isOpen);
     if (!isOpen && messages.length === 0) {
-      setMessages([{ text: "Hi, how may I help you?", isBot: true }]);
+      const startNode = ChatbotFlow[currentNodeId];
+      setMessages([
+        {
+          text: startNode.message,
+          isBot: true,
+          options: startNode.options,
+        },
+      ]);
     }
   };
 
-  const handleSendMessage = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && e.currentTarget.value.trim() !== "") {
-      const userMessage = e.currentTarget.value;
-      setMessages([...messages, { text: userMessage, isBot: false }]);
-      e.currentTarget.value = "";
-    }
+  const handleOptionClick = (nextId: string) => {
+    const nextNode = ChatbotFlow[nextId];
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      { text: nextNode.message, isBot: true, options: nextNode.options },
+    ]);
+    setCurrentNodeId(nextId);
   };
 
   return (
@@ -38,22 +54,30 @@ const Chatbot: React.FC<ChatbotProps> = ({ size = 60 }) => {
           </div>
           <div className={styles.chatMessages}>
             {messages.map((message, index) => (
-              <div
-                key={index}
-                className={`${styles.message} ${
-                  message.isBot ? styles.botMessage : styles.userMessage
-                }`}
-              >
-                {message.text}
+              <div key={index}>
+                <div
+                  className={`${styles.message} ${
+                    message.isBot ? styles.botMessage : styles.userMessage
+                  }`}
+                >
+                  {message.text}
+                </div>
+                {message.options && (
+                  <div className={styles.options}>
+                    {message.options.map((option, optionIndex) => (
+                      <button
+                        key={optionIndex}
+                        onClick={() => handleOptionClick(option.nextId)}
+                        className={styles.optionButton}
+                      >
+                        {option.text}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
             ))}
           </div>
-          <input
-            type="text"
-            placeholder="Type your message..."
-            className={styles.chatInput}
-            onKeyPress={handleSendMessage}
-          />
         </div>
       )}
       <button
