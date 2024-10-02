@@ -1,0 +1,23 @@
+.chatbotIcon {
+  display: flex;
+  background-color: blue;
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  align-items: center;
+  justify-content: center;
+}
+
+.chatbotWindow {
+  display: flex;
+  background-color: rgb(255, 255, 255);
+  height: 75vh;
+  width: 50vh;
+  border-radius: 10px;
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+}
