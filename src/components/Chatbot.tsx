@@ -1,4 +1,4 @@
-import { useState } from "React";
+import { useState } from "react";
 
 // styles
 import styles from "../styles/Chatbot.module.css";
@@ -16,7 +16,11 @@ const Chatbot = () => {
       <div className={styles.chatbotIcon} onClick={toggleChatbot}>
         <ForumSharpIcon fontSize="large" />
       </div>
-      {chatbotOpen && <div className={styles.chatbotWindow}></div>}
+      {chatbotOpen && (
+        <div className={styles.chatbotWindow}>
+          <div className={styles.chatbotHeader}>Hello</div>
+        </div>
+      )}
     </>
   );
 };

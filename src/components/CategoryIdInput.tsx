@@ -22,7 +22,7 @@ function CategoryIdInput() {
   return (
     <>
       <form className={styles.form}>
-        <label>Category ID:</label>
+        <label style={{ color: "black" }}>Category ID:</label>
         <input
           className={styles.input}
           type="text"

@@ -9,6 +9,17 @@
   right: 20px;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.3);
+}
+
+.chatbotIcon:hover {
+  cursor: pointer;
+  transform: scale(1.15);
+  transition: transform 0.3s ease;
+  bottom: 18px;
+  right: 18px;
+  align-items: center;
+  justify-content: center;
 }
 
 .chatbotWindow {
@@ -20,4 +31,16 @@
   position: fixed;
   bottom: 90px;
   right: 20px;
+  z-index: 1;
+  box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.3);
+}
+
+.chatbotHeader {
+  display: flex;
+  background-color: blue;
+  height: 50px;
+  width: 100%;
+  border-radius: 10px 10px 0 0;
+  position: relative;
+  z-index: 2;
 }

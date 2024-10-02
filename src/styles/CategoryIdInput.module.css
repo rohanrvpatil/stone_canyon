@@ -6,6 +6,8 @@
 
 .input {
   height: 20px;
+  background-color: white;
+  color: black;
 }
 
 .button {
