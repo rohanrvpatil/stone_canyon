@@ -27,6 +27,7 @@
 /* when chabot window is closed */
 .chatbotWindow {
   display: flex;
+  flex-direction: column;
   background-color: rgb(255, 255, 255);
   height: 75vh;
   width: 50vh;
@@ -47,4 +48,43 @@
   z-index: 2;
   justify-content: flex-start;
   align-items: center;
+}
+
+.chatbotBody {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.question {
+  display: flex;
+  width: fit-content;
+  position: relative;
+  color: white;
+  margin-top: 8px;
+  margin-left: 8px;
+  background-color: #16325b;
+  border-radius: 10px;
+  padding: 6px 10px;
+  max-width: 70%;
+  font-size: 15px;
+}
+
+.optionsContainer {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  margin-left: 8px;
+  gap: 4px;
+}
+
+.option {
+  width: fit-content;
+  color: #ffffff;
+  background-color: #227b94;
+  border-radius: 10px;
+  padding: 6px 10px;
+  position: relative;
+  margin-top: -10px;
+  font-size: 15px;
 }
