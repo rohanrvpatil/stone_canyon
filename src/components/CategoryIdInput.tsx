@@ -5,7 +5,6 @@ import { useState, useRef } from "react";
 import styles from "../styles/CategoryIdInput.module.css";
 
 // components
-import Chatbot from "./Chatbot";
 
 function CategoryIdInput() {
   const [categoryId, setCategoryId] = useState("");
@@ -33,7 +32,6 @@ function CategoryIdInput() {
           Submit
         </button>
       </form>
-      <Chatbot />
     </>
   );
 }
