@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
 .chatbotIcon {
   display: flex;
   background-color: blue;
@@ -22,6 +24,7 @@
   justify-content: center;
 }
 
+/* when chabot window is closed */
 .chatbotWindow {
   display: flex;
   background-color: rgb(255, 255, 255);
@@ -29,12 +32,11 @@
   width: 50vh;
   border-radius: 10px;
   position: fixed;
-  bottom: 90px;
+  bottom: 96px;
   right: 20px;
   z-index: 1;
-  box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 10px 1px rgba(70, 55, 55, 0.3);
 }
-
 .chatbotHeader {
   display: flex;
   background-color: blue;
@@ -43,4 +45,6 @@
   border-radius: 10px 10px 0 0;
   position: relative;
   z-index: 2;
+  justify-content: flex-start;
+  align-items: center;
 }

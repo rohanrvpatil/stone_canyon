@@ -18,7 +18,9 @@ const Chatbot = () => {
       </div>
       {chatbotOpen && (
         <div className={styles.chatbotWindow}>
-          <div className={styles.chatbotHeader}>Hello</div>
+          <div className={styles.chatbotHeader}>
+            <p style={{ marginLeft: "14px", fontWeight: "bold" }}>Chatbot</p>
+          </div>
         </div>
       )}
     </>
