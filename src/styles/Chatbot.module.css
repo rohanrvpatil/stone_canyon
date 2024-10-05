@@ -16,10 +16,10 @@
 
 .chatbotIcon:hover {
   cursor: pointer;
-  transform: scale(1.08);
+  transform: scale(1.07);
   transition: transform 0.3s ease;
-  bottom: 18px;
-  right: 18px;
+  bottom: 20px;
+  right: 20px;
   align-items: center;
   justify-content: center;
 }
@@ -56,11 +56,11 @@
   flex-direction: column;
   position: relative;
   margin-top: -8px;
+  /* justify-content: flex-start; */
 }
 
 .question {
   display: flex;
-  width: fit-content;
   position: relative;
   color: white;
   /* margin-top: -10px; */
@@ -70,6 +70,7 @@
   padding: 6px 10px;
   max-width: 70%;
   font-size: 15px;
+  max-width: fit-content;
 }
 
 .optionsContainer {
@@ -84,11 +85,17 @@
   width: fit-content;
   color: #ffffff;
   background-color: #227b94;
+  border-width: 0px;
   border-radius: 10px;
   padding: 6px 10px;
   position: relative;
   margin-top: -10px;
   font-size: 15px;
+  transition: background-color 0.3s;
+}
+
+.option:hover {
+  background-color: #ff5722;
 }
 
 .answer {
@@ -104,6 +111,6 @@
   max-width: 70%;
   font-size: 15px;
   align-self: flex-end;
-  margin-top: -10px;
+  margin-top: 5px;
   margin-bottom: -10px;
 }

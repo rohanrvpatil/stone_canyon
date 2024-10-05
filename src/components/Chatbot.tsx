@@ -5,11 +5,17 @@ import styles from "../styles/Chatbot.module.css";
 import ForumSharpIcon from "@mui/icons-material/ForumSharp";
 
 // components
-import questions from "./questions";
+import ChatHistory from "./ChatHistory";
 
 interface ChatbotNode {
   question: string;
   options: { [key: string]: ChatbotNode | string };
+}
+
+interface ChatMessage {
+  type: "question" | "answer" | "options";
+  text: string | string[]; // Can be a string or an array of options
+  isUser: boolean;
 }
 
 const Chatbot: React.FC = () => {
@@ -17,7 +23,9 @@ const Chatbot: React.FC = () => {
 
   const [chatbotTree, setChatbotTree] = useState<ChatbotNode | null>(null);
   const [currentNode, setCurrentNode] = useState<ChatbotNode | null>(null);
-  const [history, setHistory] = useState<ChatbotNode[]>([]);
+  // const [history, setHistory] = useState<ChatbotNode[]>([]);
+
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
 
   useEffect(() => {
     // Fetch chatbot tree from backend
@@ -36,16 +44,27 @@ const Chatbot: React.FC = () => {
   const handleOptionClick = (option: string) => {
     if (currentNode && currentNode.options[option]) {
       const nextNode = currentNode.options[option] as ChatbotNode;
-      setHistory([...history, currentNode]);
-      setCurrentNode(nextNode);
-    }
-  };
 
-  const handleGoBack = () => {
-    const prevNode = history.pop();
-    if (prevNode) {
-      setCurrentNode(prevNode);
-      setHistory([...history]);
+      setMessages((prev) => [
+        ...prev,
+        { text: currentNode.question, isUser: false, type: "question" }, // Add chatbot's current question
+      ]);
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          text: Object.keys(currentNode.options), // Store as an array
+          isUser: false,
+          type: "options",
+        },
+      ]);
+
+      setMessages((prev) => [
+        ...prev,
+        { text: option, isUser: true, type: "answer" }, // Add user's message
+      ]);
+
+      setCurrentNode(nextNode);
     }
   };
 
@@ -64,36 +83,25 @@ const Chatbot: React.FC = () => {
             <p style={{ marginLeft: "14px", fontWeight: "bold" }}>Chatbot</p>
           </div>
 
-          {currentNode && (
-            <div className={styles.chatbotBody}>
-              <p className={styles.question}>{currentNode.question}</p>
-              <div className={styles.optionsContainer}>
-                {Object.keys(currentNode.options).map((option) => (
-                  <button
-                    key={option}
-                    onClick={() => handleOptionClick(option)}
-                    className={styles.option}
-                  >
-                    {option}
-                  </button>
-                ))}
-              </div>
-              {history.length > 0 && (
-                <button onClick={handleGoBack}>Go Back</button>
-              )}
-            </div>
-          )}
-
-          {/* <div className={styles.chatbotBody}>
-            <p className={styles.question}>{questions[0].question}</p>
-            <div className={styles.optionsContainer}>
-              <p className={styles.option}>{questions[0].options[0]}</p>
-              <p className={styles.option}>{questions[0].options[1]}</p>
-              <p className={styles.option}>{questions[0].options[2]}</p>
-            </div>
-            <p className={styles.answer}>Red</p>
-            <p className={styles.question}>Hellow </p>
-          </div> */}
+          <div className={styles.chatbotBody}>
+            <ChatHistory history={messages} />
+            {currentNode && (
+              <>
+                <p className={styles.question}>{currentNode.question}</p>
+                <div className={styles.optionsContainer}>
+                  {Object.keys(currentNode.options).map((option) => (
+                    <button
+                      key={option}
+                      onClick={() => handleOptionClick(option)}
+                      className={styles.option}
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
         </div>
       )}
     </>
