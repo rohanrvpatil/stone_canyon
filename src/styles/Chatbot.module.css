@@ -16,7 +16,7 @@
 
 .chatbotIcon:hover {
   cursor: pointer;
-  transform: scale(1.15);
+  transform: scale(1.08);
   transition: transform 0.3s ease;
   bottom: 18px;
   right: 18px;
@@ -40,6 +40,7 @@
 }
 .chatbotHeader {
   display: flex;
+  position: absolute;
   background-color: blue;
   height: 50px;
   width: 100%;
@@ -54,6 +55,7 @@
   display: flex;
   flex-direction: column;
   position: relative;
+  margin-top: -8px;
 }
 
 .question {
@@ -61,7 +63,7 @@
   width: fit-content;
   position: relative;
   color: white;
-  margin-top: 8px;
+  /* margin-top: -10px; */
   margin-left: 8px;
   background-color: #16325b;
   border-radius: 10px;
@@ -87,4 +89,21 @@
   position: relative;
   margin-top: -10px;
   font-size: 15px;
+}
+
+.answer {
+  display: flex;
+  width: fit-content;
+  position: relative;
+  color: white;
+  margin-right: 8px;
+  margin-left: 8px;
+  background-color: #ff6500;
+  border-radius: 10px;
+  padding: 6px 10px;
+  max-width: 70%;
+  font-size: 15px;
+  align-self: flex-end;
+  margin-top: -10px;
+  margin-bottom: -10px;
 }
