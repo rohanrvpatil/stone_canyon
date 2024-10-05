@@ -20,7 +20,10 @@ interface ChatbotNode {
   options: { [key: string]: ChatbotNode | string };
 }
 
-const parseCSVAndBuildTree = (filePath: string): Promise<ChatbotNode> => {
+const parseCSVAndBuildTree = (
+  filePath: string,
+  categoryId: number
+): Promise<ChatbotNode> => {
   return new Promise((resolve, reject) => {
     const chatbotTree: ChatbotNode = {
       question: "",
@@ -31,7 +34,7 @@ const parseCSVAndBuildTree = (filePath: string): Promise<ChatbotNode> => {
     fs.createReadStream(filePath)
       .pipe(csvParser())
       .on("data", (row) => {
-        if (row["Category ID"] == 1) {
+        if (parseInt(row["Category ID"], 10) === categoryId) {
           const funnel = row["Question Funnel"].split(" | "); // Split into question-option pairs
           // console.log(funnel);
           funnel.forEach((pair: string) => {
@@ -59,9 +62,12 @@ const parseCSVAndBuildTree = (filePath: string): Promise<ChatbotNode> => {
 };
 
 app.get("/chatbot-tree", async (req, res) => {
+  const categoryId: number = parseInt(req.query.categoryId as string, 10)!;
+
   try {
     const tree = await parseCSVAndBuildTree(
-      "../home_improvement/home_improvement.csv"
+      "../home_improvement/home_improvement.csv",
+      categoryId
     );
     res.json(tree);
   } catch (error) {

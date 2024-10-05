@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
 
 // styles
 import styles from "../styles/Chatbot.module.css";
 import ForumSharpIcon from "@mui/icons-material/ForumSharp";
+import "react-toastify/dist/ReactToastify.css";
 
 // components
 import ChatHistory from "./ChatHistory";
@@ -14,22 +16,25 @@ interface ChatbotNode {
 
 interface ChatMessage {
   type: "question" | "answer" | "options";
-  text: string | string[]; // Can be a string or an array of options
+  text: string | string[];
   isUser: boolean;
 }
 
-const Chatbot: React.FC = () => {
+interface ChatbotProps {
+  categoryId: number;
+}
+
+const Chatbot: React.FC<ChatbotProps> = ({ categoryId }) => {
   const [chatbotOpen, setChatbotOpen] = useState(false);
 
-  const [chatbotTree, setChatbotTree] = useState<ChatbotNode | null>(null);
+  const [_, setChatbotTree] = useState<ChatbotNode | null>(null);
   const [currentNode, setCurrentNode] = useState<ChatbotNode | null>(null);
   // const [history, setHistory] = useState<ChatbotNode[]>([]);
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
 
-  useEffect(() => {
-    // Fetch chatbot tree from backend
-    fetch("http://localhost:3000/chatbot-tree")
+  const fetchCategoryTree = (categoryId: number) => {
+    fetch(`http://localhost:3000/chatbot-tree?categoryId=${categoryId}`)
       .then((res) => res.json())
       .then((data) => {
         // console.log(data);
@@ -39,7 +44,9 @@ const Chatbot: React.FC = () => {
       .catch((error) => {
         console.error("Error fetching chatbot tree:", error);
       });
-  }, []);
+  };
+
+  // useEffect(() => {}, []);
 
   const handleOptionClick = (option: string) => {
     if (currentNode && currentNode.options[option]) {
@@ -47,13 +54,13 @@ const Chatbot: React.FC = () => {
 
       setMessages((prev) => [
         ...prev,
-        { text: currentNode.question, isUser: false, type: "question" }, // Add chatbot's current question
+        { text: currentNode.question, isUser: false, type: "question" },
       ]);
 
       setMessages((prev) => [
         ...prev,
         {
-          text: Object.keys(currentNode.options), // Store as an array
+          text: Object.keys(currentNode.options),
           isUser: false,
           type: "options",
         },
@@ -61,7 +68,7 @@ const Chatbot: React.FC = () => {
 
       setMessages((prev) => [
         ...prev,
-        { text: option, isUser: true, type: "answer" }, // Add user's message
+        { text: option, isUser: true, type: "answer" },
       ]);
 
       setCurrentNode(nextNode);
@@ -69,11 +76,28 @@ const Chatbot: React.FC = () => {
   };
 
   const toggleChatbot = () => {
-    setChatbotOpen(!chatbotOpen);
+    if (categoryId >= 1 && categoryId <= 7) {
+      fetchCategoryTree(categoryId);
+      setChatbotOpen(!chatbotOpen);
+    } else {
+      toast.dismiss();
+      toast.error(
+        "Invalid Category ID entered. Please enter a value between 1 and 7.",
+        {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          progress: undefined,
+        }
+      );
+    }
   };
 
   return (
     <>
+      <ToastContainer />
       <div className={styles.chatbotIcon} onClick={toggleChatbot}>
         <ForumSharpIcon fontSize="large" />
       </div>
@@ -85,9 +109,12 @@ const Chatbot: React.FC = () => {
 
           <div className={styles.chatbotBody}>
             <ChatHistory history={messages} />
-            {currentNode && (
+            {currentNode && Object.keys(currentNode.options).length > 0 && (
               <>
-                <p className={styles.question}>{currentNode.question}</p>
+                <div className={styles.questionContainer}>
+                  <p className={styles.question}>{currentNode.question}</p>
+                </div>
+
                 <div className={styles.optionsContainer}>
                   {Object.keys(currentNode.options).map((option) => (
                     <button

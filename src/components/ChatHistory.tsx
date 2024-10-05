@@ -31,14 +31,17 @@ const ChatHistory: React.FC<ChatHistoryProps> = ({ history }) => {
         }
 
         return (
-          <p
-            key={index}
-            className={
-              message.type === "question" ? styles.question : styles.answer
-            }
-          >
-            {message.text}
-          </p>
+          <>
+            {message.type === "question" ? (
+              <div className={styles.questionContainer} key={index}>
+                <p className={styles.question}>{message.text}</p>
+              </div>
+            ) : (
+              <p className={styles.answer} key={index}>
+                {message.text}
+              </p>
+            )}
+          </>
         );
       })}
     </div>

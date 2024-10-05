@@ -8,13 +8,14 @@ import styles from "../styles/CategoryIdInput.module.css";
 import Chatbot from "./Chatbot";
 
 function CategoryIdInput() {
-  const [categoryId, setCategoryId] = useState("");
+  const [categoryId, setCategoryId] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     if (inputRef.current) {
-      setCategoryId(inputRef.current.value);
+      const number_categoryId = Number(inputRef.current.value);
+      setCategoryId(number_categoryId);
       console.log("Submitted Category ID:", inputRef.current.value);
     }
   };
@@ -33,7 +34,7 @@ function CategoryIdInput() {
           Submit
         </button>
       </form>
-      <Chatbot />
+      <Chatbot categoryId={categoryId} />
     </>
   );
 }

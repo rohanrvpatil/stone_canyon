@@ -59,8 +59,14 @@
   /* justify-content: flex-start; */
 }
 
+.questionContainer {
+  /* display: flex; */
+  /* flex-direction: column; */
+  max-width: 70%; /* Max width for the container */
+}
+
 .question {
-  display: flex;
+  display: inline-block;
   position: relative;
   color: white;
   /* margin-top: -10px; */
@@ -68,9 +74,8 @@
   background-color: #16325b;
   border-radius: 10px;
   padding: 6px 10px;
-  max-width: 70%;
   font-size: 15px;
-  max-width: fit-content;
+  text-align: left;
 }
 
 .optionsContainer {
