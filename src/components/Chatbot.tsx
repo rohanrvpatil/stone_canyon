@@ -104,7 +104,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ categoryId }) => {
       {chatbotOpen && (
         <div className={styles.chatbotWindow}>
           <div className={styles.chatbotHeader}>
-            <p style={{ marginLeft: "14px", fontWeight: "bold" }}>Chatbot</p>
+            <p style={{ marginLeft: "8px", fontWeight: "bold" }}>Chatbot</p>
           </div>
 
           <div className={styles.chatbotBody}>
