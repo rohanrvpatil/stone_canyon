@@ -5,7 +5,7 @@ import { useState, useRef } from "react";
 import styles from "../styles/CategoryIdInput.module.css";
 
 // components
-import Chatbot from "./Chatbot";
+import Chatbot from "../Chatbot/Chatbot";
 
 function CategoryIdInput() {
   const [categoryId, setCategoryId] = useState(0);

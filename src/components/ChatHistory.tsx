@@ -1,6 +1,6 @@
 import React from "react";
 
-import styles from "../styles/Chatbot.module.css";
+import styles from "../Chatbot/Chatbot.module.css";
 
 // Sample Chat History Structure
 interface ChatMessage {
