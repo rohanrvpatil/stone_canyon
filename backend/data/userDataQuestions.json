@@ -1,17 +1,22 @@
 [
   {
-    "question": "Please enter your full name"
+    "question": "Please enter your full name",
+    "key": "fullName"
   },
   {
-    "question": "Enter your email address"
+    "question": "Enter your email address",
+    "key": "emailAddress"
   },
   {
-    "question": "Enter your phone number with country code (For ex: +91 <number>)"
+    "question": "Enter your phone number with country code (For ex: +91 <number>)",
+    "key": "phoneNumber"
   },
   {
-    "question": "Enter your zip code"
+    "question": "Enter your zip code",
+    "key": "zipCode"
   },
   {
-    "question": "Enter your full address"
+    "question": "Enter your full address",
+    "key": "fullAddress"
   }
 ]

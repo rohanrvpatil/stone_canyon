@@ -96,6 +96,7 @@ padding-bottom: 6px;
 }
 
 .optionsContainer {
+  max-width: 70%;
   display: flex;
   flex-wrap: wrap;
   position: relative;

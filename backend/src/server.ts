@@ -6,7 +6,8 @@ import csvParser from "csv-parser";
 import bodyParser from "body-parser";
 import fs from "fs";
 
-// components
+// data
+import userDataQuestions from "../data/userDataQuestions.json";
 
 const app = express();
 const PORT = 3000;
@@ -39,7 +40,7 @@ const parseCSVAndBuildTree = (
           // console.log(funnel);
           funnel.forEach((pair: string) => {
             const [question, option] = pair.split(" > "); // Separate question and option
-            console.log(`Question: ${question}, Option: ${option}`);
+            // console.log(`Question: ${question}, Option: ${option}`);
 
             if (!currentNode.question) {
               currentNode.question = question; // Set the question
@@ -75,7 +76,16 @@ app.get("/chatbot-tree", async (req, res) => {
   }
 });
 
-app.get("/user-data-questions", async (req, res) => {});
+app.get("/user-data-questions", async (req, res) => {
+  let currentQuestionIndex = 0;
+  if (currentQuestionIndex < userDataQuestions.length) {
+    res.json(userDataQuestions[currentQuestionIndex]);
+    currentQuestionIndex++;
+  } else {
+    res.json({ message: "All questions have been answered" });
+    currentQuestionIndex = 0; // Reset for next session or set appropriate handling
+  }
+});
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

@@ -16,7 +16,7 @@ function CategoryIdInput() {
     if (inputRef.current) {
       const number_categoryId = Number(inputRef.current.value);
       setCategoryId(number_categoryId);
-      console.log("Submitted Category ID:", inputRef.current.value);
+      // console.log("Submitted Category ID:", inputRef.current.value);
     }
   };
 

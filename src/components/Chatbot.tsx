@@ -12,14 +12,18 @@ import SendIcon from "@mui/icons-material/Send";
 // components
 import ChatHistory from "./ChatHistory";
 
+// data
+import userDataQuestions from "../../backend/data/userDataQuestions.json";
+
 interface ChatbotNode {
   question: string;
   options: { [key: string]: ChatbotNode | string };
 }
 
 interface ChatMessage {
+  id: string;
   type: "question" | "answer" | "options";
-  text: string | string[];
+  text: string | string[]; // Can be a string or an array of options
   isUser: boolean;
 }
 
@@ -36,11 +40,26 @@ const Chatbot: React.FC<ChatbotProps> = ({ categoryId }) => {
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
 
+  const [userData, setUserData] = useState({
+    fullName: "",
+    emailAddress: "",
+    phoneNumber: "",
+    zipCode: "",
+    fullAddress: "",
+  });
+
+  const [currentInput, setCurrentInput] = useState("");
+  const [currentInputIndex, setCurrentInputIndex] = useState(0);
+
+  const createChatbotNode = (question: string): ChatbotNode => ({
+    question,
+    options: {}, // No options for this node
+  });
+
   const fetchCategoryTree = (categoryId: number) => {
     fetch(`http://localhost:3000/chatbot-tree?categoryId=${categoryId}`)
       .then((res) => res.json())
       .then((data) => {
-        // console.log(data);
         setChatbotTree(data);
         setCurrentNode(data);
       })
@@ -53,8 +72,16 @@ const Chatbot: React.FC<ChatbotProps> = ({ categoryId }) => {
     fetch(`http://localhost:3000/user-data-questions`)
       .then((res) => res.json())
       .then((data) => {
-        setChatbotTree(data);
-        setCurrentNode(data);
+        if (data.message) {
+          console.log("All questions have been answered");
+        } else {
+          // console.log(data);
+
+          const userQuestionNode = createChatbotNode(data.question);
+
+          setChatbotTree(userQuestionNode);
+          setCurrentNode(userQuestionNode);
+        }
       })
       .catch((error) => {
         console.error("Error fetching User data questions:", error);
@@ -69,24 +96,75 @@ const Chatbot: React.FC<ChatbotProps> = ({ categoryId }) => {
 
       setMessages((prev) => [
         ...prev,
-        { text: currentNode.question, isUser: false, type: "question" },
-      ]);
-
-      setMessages((prev) => [
-        ...prev,
         {
+          id: `question-${Date.now()}`,
+          text: currentNode.question,
+          isUser: false,
+          type: "question",
+        },
+        {
+          id: `options-${Date.now()}`,
           text: Object.keys(currentNode.options),
           isUser: false,
           type: "options",
         },
-      ]);
-
-      setMessages((prev) => [
-        ...prev,
-        { text: option, isUser: true, type: "answer" },
+        {
+          id: `user-${Date.now()}`,
+          text: option,
+          isUser: true,
+          type: "answer",
+        },
       ]);
 
       setCurrentNode(nextNode);
+
+      if (
+        !nextNode ||
+        !nextNode.options ||
+        Object.keys(nextNode.options).length === 0
+      ) {
+        fetchUserDataQuestions();
+      }
+    }
+  };
+
+  const handleUserInput = () => {
+    const currentQuestionKey = userDataQuestions[currentInputIndex]?.key;
+
+    if (currentNode) {
+      setUserData((prev) => ({
+        ...prev,
+        [currentQuestionKey]: currentInput,
+      }));
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `question-${Date.now()}`,
+          text: currentNode.question,
+          isUser: false,
+          type: "question",
+        },
+        {
+          id: `user-${Date.now()}`,
+          text: currentInput,
+          isUser: true,
+          type: "answer",
+        },
+      ]);
+
+      if (currentInputIndex < userDataQuestions.length - 1) {
+        setCurrentInputIndex((prevIndex) => prevIndex + 1);
+        // setCurrentInputIndex(currentInputIndex + 1);
+        const nextNode = createChatbotNode(
+          userDataQuestions[currentInputIndex + 1].question
+        );
+        setCurrentNode(nextNode);
+      } else {
+        // Handle the end of the question s, e.g., save to CSV or JSON
+        setCurrentNode(null);
+      }
+      setCurrentInput("");
     }
   };
 
@@ -124,6 +202,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ categoryId }) => {
 
           <div className={styles.chatbotBody}>
             <ChatHistory history={messages} />
+            {/* && Object.keys(currentNode.options).length > 0 */}
             {currentNode && Object.keys(currentNode.options).length > 0 && (
               <>
                 <div className={styles.questionContainer}>
@@ -143,14 +222,22 @@ const Chatbot: React.FC<ChatbotProps> = ({ categoryId }) => {
                 </div>
               </>
             )}
+            {currentNode && Object.keys(currentNode.options).length === 0 && (
+              <>
+                <div className={styles.questionContainer}>
+                  <p className={styles.question}>{currentNode.question}</p>
+                </div>
+              </>
+            )}
           </div>
           <div className={styles.userInputContainer}>
             <input
               type="text"
               placeholder="Message..."
               className={styles.userInputField}
+              onChange={(e) => setCurrentInput(e.target.value)}
             />
-            <div className={styles.userSendButton}>
+            <div className={styles.userSendButton} onClick={handleUserInput}>
               <SendIcon fontSize="medium" />
             </div>
           </div>
