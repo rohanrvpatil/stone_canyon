@@ -1,0 +1,17 @@
+[
+  {
+    "question": "Please enter your full name"
+  },
+  {
+    "question": "Enter your email address"
+  },
+  {
+    "question": "Enter your phone number with country code (For ex: +91 <number>)"
+  },
+  {
+    "question": "Enter your zip code"
+  },
+  {
+    "question": "Enter your full address"
+  }
+]

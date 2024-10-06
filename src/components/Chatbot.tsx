@@ -3,8 +3,11 @@ import { ToastContainer, toast } from "react-toastify";
 
 // styles
 import styles from "../styles/Chatbot.module.css";
-import ForumSharpIcon from "@mui/icons-material/ForumSharp";
 import "react-toastify/dist/ReactToastify.css";
+
+// icons
+import ForumSharpIcon from "@mui/icons-material/ForumSharp";
+import SendIcon from "@mui/icons-material/Send";
 
 // components
 import ChatHistory from "./ChatHistory";
@@ -43,6 +46,18 @@ const Chatbot: React.FC<ChatbotProps> = ({ categoryId }) => {
       })
       .catch((error) => {
         console.error("Error fetching chatbot tree:", error);
+      });
+  };
+
+  const fetchUserDataQuestions = () => {
+    fetch(`http://localhost:3000/user-data-questions`)
+      .then((res) => res.json())
+      .then((data) => {
+        setChatbotTree(data);
+        setCurrentNode(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching User data questions:", error);
       });
   };
 
@@ -128,6 +143,16 @@ const Chatbot: React.FC<ChatbotProps> = ({ categoryId }) => {
                 </div>
               </>
             )}
+          </div>
+          <div className={styles.userInputContainer}>
+            <input
+              type="text"
+              placeholder="Message..."
+              className={styles.userInputField}
+            />
+            <div className={styles.userSendButton}>
+              <SendIcon fontSize="medium" />
+            </div>
           </div>
         </div>
       )}

@@ -75,9 +75,7 @@ app.get("/chatbot-tree", async (req, res) => {
   }
 });
 
-app.get("/default", async (req, res) => {
-  res.send("Hello World");
-});
+app.get("/user-data-questions", async (req, res) => {});
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

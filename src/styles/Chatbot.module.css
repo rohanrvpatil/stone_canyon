@@ -1,5 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 
+/* 
+padding-left: 8px;
+padding-right: 8px;
+padding-bottom: 6px;
+
+*/
 .chatbotIcon {
   display: flex;
   background-color: blue;
@@ -37,7 +43,6 @@
   right: 20px;
   z-index: 1;
   box-shadow: 0 0 10px 1px rgba(70, 55, 55, 0.3);
-  /* padding: 10px; */
 }
 .chatbotHeader {
   display: flex;
@@ -73,9 +78,7 @@
 }
 
 .questionContainer {
-  /* display: flex; */
-  /* flex-direction: column; */
-  max-width: 70%; /* Max width for the container */
+  max-width: 70%;
   margin-top: 6px;
 }
 
@@ -85,8 +88,6 @@
   display: inline-block;
   position: relative;
   color: white;
-  /* margin-top: -10px; */
-  /* margin-left: 8px; */
   background-color: #16325b;
   border-radius: 10px;
   padding: 6px 10px;
@@ -97,10 +98,7 @@
 .optionsContainer {
   display: flex;
   flex-wrap: wrap;
-  /* flex-direction: row; */
   position: relative;
-  /* margin-left: 8px; */
-  /* margin-right: 8px; */
   row-gap: 6px;
   column-gap: 6px;
   margin-top: 6px;
@@ -128,8 +126,6 @@
   width: fit-content;
   position: relative;
   color: white;
-  /* margin-right: 8px; */
-  /* margin-left: 8px; */
   background-color: #ff6500;
   border-radius: 10px;
   padding: 6px 10px;
@@ -138,5 +134,59 @@
   align-self: flex-end;
   margin-top: 6px;
   margin-bottom: 0px;
-  /* margin-bottom: -10px; */
+}
+
+.userInputContainer {
+  display: flex;
+  flex-direction: row;
+  background-color: #f2f0ef;
+  padding: 4px;
+  border: 2px solid blue; /* Correct border definition */
+  border-radius: 50px;
+  margin-left: 8px;
+  margin-right: 8px;
+  margin-bottom: 6px;
+  align-items: center;
+}
+
+.userInputField {
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  height: 20px;
+  width: 80%;
+  background-color: #f2f0ef;
+  outline: none;
+  color: black;
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+}
+
+.userInputField::placeholder {
+  font-size: 16px;
+  color: grey;
+  opacity: 0.8;
+}
+
+.userInputField:focus {
+  border: none;
+}
+
+.userSendButton {
+  display: flex;
+  margin-left: auto;
+  background-color: blue;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  height: 100%;
+  width: 42px;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s;
+}
+
+.userSendButton:hover {
+  background-color: #16325b;
 }
