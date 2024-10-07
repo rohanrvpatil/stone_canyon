@@ -1,5 +1,6 @@
 // general
 import { KeyboardEvent } from "react";
+import { MutableRefObject } from "react";
 
 // data
 import userDataQuestions from "../../backend/data/userDataQuestions.json";
@@ -17,7 +18,7 @@ import {
 // redux
 import {
   setCurrentNode,
-  setCurrentInput,
+  // setCurrentInput,
   addMessage,
   setCurrentInputIndex,
   // setValidationMessage,
@@ -102,7 +103,7 @@ export const handleUserInput = (
       case "emailAddress":
         errorMessage = validateEmail(currentInput);
         break;
-      case "phone":
+      case "phoneNumber":
         errorMessage = validatePhone(currentInput);
         break;
       case "zipCode":
@@ -143,17 +144,6 @@ export const handleUserInput = (
         })
       );
 
-      // if (currentInputIndex < userDataQuestions.length - 1) {
-      //   const newIndex = currentInputIndex + 1;
-      //   const nextNode = createChatbotNode(
-      //     userDataQuestions[newIndex].question
-      //   );
-      //   dispatch(setCurrentInputIndex(newIndex));
-      //   dispatch(setCurrentNode(nextNode));
-      // } else {
-      //   dispatch(setCurrentNode(null));
-      // }
-
       return;
     }
 
@@ -175,8 +165,8 @@ export const handleUserInput = (
       console.log(userData);
       dispatch(setCurrentNode(null));
     }
-    dispatch(setCurrentInput(""));
   }
+  // dispatch(setCurrentInput(""));
 };
 
 export const handleKeyDown = (
@@ -198,4 +188,12 @@ export const handleKeyDown = (
       );
     }
   };
+};
+
+export const clearInputValue = (
+  inputRef: MutableRefObject<HTMLInputElement | null>
+) => {
+  if (inputRef.current) {
+    inputRef.current.value = ""; // Directly manipulate the input field's value
+  }
 };

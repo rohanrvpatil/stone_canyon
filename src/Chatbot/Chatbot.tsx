@@ -1,5 +1,5 @@
 // general
-import React from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 
 // styles
@@ -55,6 +55,16 @@ const Chatbot: React.FC<ChatbotProps> = ({ categoryId }) => {
     (state: RootState) => state.chatbot.validationMessage
   );
 
+  const chatContainerRef = useRef<HTMLDivElement | null>(null);
+  const [localInput, setLocalInput] = useState(currentInput);
+
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
+
   return (
     <>
       <ToastContainer />
@@ -78,7 +88,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ categoryId }) => {
             <p style={{ marginLeft: "8px", fontWeight: "bold" }}>Chatbot</p>
           </div>
 
-          <div className={styles.chatbotBody}>
+          <div className={styles.chatbotBody} ref={chatContainerRef}>
             <ChatHistory history={messages} />
             {currentNode && Object.keys(currentNode.options).length > 0 && (
               <>
@@ -108,7 +118,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ categoryId }) => {
                 </div>
               </>
             )}
-            {validationMessage && ( // Add validation message rendering
+            {validationMessage && (
               <div className={styles.validationErrorContainer}>
                 <p className={styles.validationError}>{validationMessage}</p>
               </div>
@@ -119,27 +129,38 @@ const Chatbot: React.FC<ChatbotProps> = ({ categoryId }) => {
               type="text"
               placeholder="Message..."
               className={styles.userInputField}
-              onChange={(e) => dispatch(setCurrentInput(e.target.value))}
-              onKeyDown={handleKeyDown(
-                dispatch,
-                userData,
-                currentInput,
-                currentInputIndex,
-                currentNode
-              )}
+              value={localInput}
+              onChange={(e) => {
+                setLocalInput(e.target.value);
+                dispatch(setCurrentInput(e.target.value));
+              }}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  handleKeyDown(
+                    dispatch,
+                    userData,
+                    currentInput,
+                    currentInputIndex,
+                    currentNode
+                  )(event);
+                  setLocalInput("");
+                  dispatch(setCurrentInput(""));
+                }
+              }}
             />
             <div
               className={styles.userSendButton}
-              // onClick={handleUserInput(dispatch)}
-              onClick={() =>
+              onClick={() => {
                 handleUserInput(
                   dispatch,
                   userData,
                   currentInput,
                   currentInputIndex,
                   currentNode
-                )
-              }
+                );
+                setLocalInput("");
+                dispatch(setCurrentInput(""));
+              }}
             >
               <SendIcon fontSize="medium" />
             </div>

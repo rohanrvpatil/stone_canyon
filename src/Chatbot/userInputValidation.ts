@@ -17,10 +17,12 @@ export const validateEmail = (email: string): string | null => {
 };
 
 export const validatePhone = (phone: string): string | null => {
-  const phoneRegex = /^\+\d{1,3}\s?\d{10}$/; // e.g., +1234567890 or +12 3456789012
+  const phoneRegex = /^\D*(\d\D*){10}$/;
+
   if (!phoneRegex.test(phone)) {
-    return "Phone number must be in the format +country-code followed by a 10-digit number.";
+    return "Phone number must contain exactly 10 digits.";
   }
+
   return null;
 };
 
