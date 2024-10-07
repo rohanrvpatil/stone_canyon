@@ -18,3 +18,7 @@ export interface ChatbotState {
   currentInput: string;
   currentInputIndex: number;
 }
+
+export interface ChatbotProps {
+  categoryId: number;
+}
