@@ -10,10 +10,14 @@ import "react-toastify/dist/ReactToastify.css";
 import ForumSharpIcon from "@mui/icons-material/ForumSharp";
 import SendIcon from "@mui/icons-material/Send";
 
-// components
-import ChatHistory from "../components/ChatHistory";
+// components and functions
+import ChatHistory from "./ChatHistory";
 import { fetchCategoryTree } from "./ChatbotAPI";
-import { handleOptionClick, handleUserInput } from "./ChatbotInput";
+import {
+  handleOptionClick,
+  handleUserInput,
+  handleKeyDown,
+} from "./ChatbotInput";
 import { toggleChatbot } from "./ChatbotUtils";
 
 // Redux
@@ -47,6 +51,9 @@ const Chatbot: React.FC<ChatbotProps> = ({ categoryId }) => {
     (state: RootState) => state.chatbot.currentNode
   );
   const messages = useSelector((state: RootState) => state.chatbot.messages);
+  const validationMessage = useSelector(
+    (state: RootState) => state.chatbot.validationMessage
+  );
 
   return (
     <>
@@ -101,6 +108,11 @@ const Chatbot: React.FC<ChatbotProps> = ({ categoryId }) => {
                 </div>
               </>
             )}
+            {validationMessage && ( // Add validation message rendering
+              <div className={styles.validationErrorContainer}>
+                <p className={styles.validationError}>{validationMessage}</p>
+              </div>
+            )}
           </div>
           <div className={styles.userInputContainer}>
             <input
@@ -108,6 +120,13 @@ const Chatbot: React.FC<ChatbotProps> = ({ categoryId }) => {
               placeholder="Message..."
               className={styles.userInputField}
               onChange={(e) => dispatch(setCurrentInput(e.target.value))}
+              onKeyDown={handleKeyDown(
+                dispatch,
+                userData,
+                currentInput,
+                currentInputIndex,
+                currentNode
+              )}
             />
             <div
               className={styles.userSendButton}

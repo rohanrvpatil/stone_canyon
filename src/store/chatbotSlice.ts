@@ -14,6 +14,7 @@ const initialState: ChatbotState = {
   messages: [],
   currentInput: "",
   currentInputIndex: 0,
+  validationMessage: "",
 };
 
 const chatbotSlice = createSlice({
@@ -41,6 +42,9 @@ const chatbotSlice = createSlice({
     addMessage: (state, action: PayloadAction<ChatMessage>) => {
       state.messages.push(action.payload);
     },
+    setValidationMessage: (state, action: PayloadAction<string>) => {
+      state.validationMessage = action.payload; // Update validation message state
+    },
   },
 });
 
@@ -52,6 +56,7 @@ export const {
   setCurrentInput,
   setCurrentInputIndex,
   addMessage,
+  setValidationMessage,
 } = chatbotSlice.actions;
 
 export default chatbotSlice.reducer;

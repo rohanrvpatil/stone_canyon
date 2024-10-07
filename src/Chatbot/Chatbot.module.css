@@ -122,17 +122,19 @@ padding-bottom: 6px;
   background-color: #ff6500;
 }
 
+.answerContainer {
+  max-width: 70%;
+  align-self: flex-end;
+}
+
 .answer {
   display: flex;
   width: fit-content;
-  position: relative;
   color: white;
   background-color: #ff6500;
   border-radius: 10px;
   padding: 6px 10px;
-  max-width: 70%;
   font-size: 15px;
-  align-self: flex-end;
   margin-top: 6px;
   margin-bottom: 0px;
 }
@@ -190,4 +192,22 @@ padding-bottom: 6px;
 
 .userSendButton:hover {
   background-color: #16325b;
+}
+
+.validationErrorContainer {
+  max-width: 70%;
+  margin-top: 6px;
+}
+
+.validationError {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  display: inline-block;
+  position: relative;
+  color: white;
+  background-color: red;
+  border-radius: 10px;
+  padding: 6px 10px;
+  font-size: 15px;
+  text-align: left;
 }

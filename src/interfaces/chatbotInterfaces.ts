@@ -5,7 +5,7 @@ export interface ChatbotNode {
 
 export interface ChatMessage {
   id: string;
-  type: "question" | "answer" | "options";
+  type: "question" | "answer" | "options" | "error";
   text: string | string[]; // Can be a string or an array of options
   isUser: boolean;
 }
@@ -17,8 +17,13 @@ export interface ChatbotState {
   messages: ChatMessage[];
   currentInput: string;
   currentInputIndex: number;
+  validationMessage: string;
 }
 
 export interface ChatbotProps {
   categoryId: number;
+}
+
+export interface ChatHistoryProps {
+  history: ChatMessage[]; // Array of chat messages
 }

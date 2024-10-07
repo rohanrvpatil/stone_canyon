@@ -2,17 +2,8 @@ import React from "react";
 
 import styles from "../Chatbot/Chatbot.module.css";
 
-// Sample Chat History Structure
-interface ChatMessage {
-  id: string;
-  type: "question" | "answer" | "options";
-  text: string | string[]; // Can be a string or an array of options
-  isUser: boolean;
-}
-
-interface ChatHistoryProps {
-  history: ChatMessage[]; // Array of chat messages
-}
+// interfaces
+import { ChatHistoryProps } from "../interfaces";
 
 const ChatHistory: React.FC<ChatHistoryProps> = ({ history }) => {
   return (
@@ -32,24 +23,25 @@ const ChatHistory: React.FC<ChatHistoryProps> = ({ history }) => {
                 ))}
             </div>
           );
+        } else if (message.type === "question") {
+          return (
+            <div key={message.id} className={styles.questionContainer}>
+              <p className={styles.question}>{message.text}</p>
+            </div>
+          );
+        } else if (message.type === "answer") {
+          return (
+            <div key={message.id} className={styles.answerContainer}>
+              <p className={styles.answer}>{message.text}</p>
+            </div>
+          );
+        } else {
+          return (
+            <div key={message.id} className={styles.validationErrorContainer}>
+              <p className={styles.validationError}>{message.text}</p>
+            </div>
+          );
         }
-
-        return (
-          <div
-            key={message.id}
-            style={{ display: "flex", flexDirection: "column" }}
-          >
-            {message.type === "question" ? (
-              <div className={styles.questionContainer} key={message.id}>
-                <p className={styles.question}>{message.text}</p>
-              </div>
-            ) : (
-              <p className={styles.answer} key={message.id}>
-                {message.text}
-              </p>
-            )}
-          </div>
-        );
       })}
     </div>
   );
