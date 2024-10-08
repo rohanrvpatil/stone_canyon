@@ -113,10 +113,11 @@ app.post("/update-service-id", (req, res) => {
 
       if (matchingRow) {
         const serviceId = matchingRow["Service ID"];
-        console.log(`Service ID: ${serviceId}`);
-        store.dispatch(setServiceId({ serviceId }));
+        res.status(200).json({ serviceId });
+        // console.log(`Service ID: ${serviceId}`);
+        // store.dispatch(setServiceId({ serviceId }));
 
-        res.status(200).send("Service ID updated in state.");
+        // res.status(200).send("Service ID updated in state.");
       } else {
         res.status(404).send("No matching Question Funnel found.");
       }

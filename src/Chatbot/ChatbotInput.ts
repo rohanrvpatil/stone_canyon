@@ -26,6 +26,7 @@ import {
   setQuestionFunnel,
 } from "../store/chatbotSlice";
 import { setUserData } from "../store/userSlice";
+import { openModal } from "../store/modalSlice";
 
 // interfaces
 import { ChatbotNode } from "../interfaces/chatbotInterfaces";
@@ -36,11 +37,12 @@ export const createChatbotNode = (question: string): ChatbotNode => ({
   options: {},
 });
 
-export const handleOptionClick = (
+export const handleOptionClick = async (
   dispatch: any,
   currentNode: ChatbotNode | null,
   option: string,
-  questionFunnel: string
+  questionFunnel: string,
+  userData: UserData
 ) => {
   if (currentNode && currentNode.options[option]) {
     const nextNode = currentNode.options[option] as ChatbotNode;
@@ -93,7 +95,17 @@ export const handleOptionClick = (
       Object.keys(nextNode.options).length === 0
     ) {
       console.log(questionFunnel + newQuestionFunnel);
-      updateServiceId(questionFunnel + newQuestionFunnel);
+      const response = await updateServiceId(
+        questionFunnel + newQuestionFunnel
+      );
+      const { serviceId } = response;
+
+      const updatedUserData: UserData = {
+        ...userData,
+        serviceId: serviceId,
+      };
+
+      dispatch(setUserData(updatedUserData));
     }
 
     // console.log("Updated Question Funnel:", questionFunnel + newQuestionFunnel);
@@ -183,13 +195,13 @@ export const handleUserInput = (
     } else {
       console.log(userData);
       dispatch(setCurrentNode(null));
+      dispatch(openModal());
     }
   }
-  // dispatch(setCurrentInput(""));
 };
 
 export const handleKeyDown = (
-  dispatch: any, // Type this properly based on your dispatch type
+  dispatch: any,
   userData: UserData,
   currentInput: string,
   currentInputIndex: number,
@@ -197,7 +209,7 @@ export const handleKeyDown = (
 ) => {
   return (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
-      event.preventDefault(); // Prevent the default action
+      event.preventDefault();
       handleUserInput(
         dispatch,
         userData,

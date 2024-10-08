@@ -19,6 +19,7 @@ import {
   handleKeyDown,
 } from "./ChatbotInput";
 import { toggleChatbot } from "./ChatbotUtils";
+import UserDataModal from "./UserDataModal";
 
 // Redux
 import { useSelector, useDispatch } from "react-redux";
@@ -29,6 +30,7 @@ import {
   // setMessages,
   setChatbotOpen,
 } from "../store/chatbotSlice";
+import { closeModal } from "../store/modalSlice";
 
 // interfaces
 import { ChatbotProps } from "../interfaces/chatbotInterfaces";
@@ -57,6 +59,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ categoryId }) => {
   const questionFunnel = useSelector(
     (state: RootState) => state.chatbot.questionFunnel
   );
+  const isOpen = useSelector((state: any) => state.modal.isOpen);
 
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
   const [localInput, setLocalInput] = useState(currentInput);
@@ -71,6 +74,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ categoryId }) => {
   return (
     <>
       <ToastContainer />
+
       <div
         className={styles.chatbotIcon}
         onClick={() =>
@@ -87,6 +91,21 @@ const Chatbot: React.FC<ChatbotProps> = ({ categoryId }) => {
       </div>
       {chatbotOpen && (
         <div className={styles.chatbotWindow}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            {isOpen ? (
+              <UserDataModal
+                dispatch={dispatch}
+                isOpen={isOpen}
+                userData={userData}
+                onClose={closeModal}
+              />
+            ) : null}
+          </div>
           <div className={styles.chatbotHeader}>
             <p style={{ marginLeft: "8px", fontWeight: "bold" }}>Chatbot</p>
           </div>
@@ -108,7 +127,8 @@ const Chatbot: React.FC<ChatbotProps> = ({ categoryId }) => {
                           dispatch,
                           currentNode,
                           option,
-                          questionFunnel
+                          questionFunnel,
+                          userData
                         )
                       }
                       className={styles.option}

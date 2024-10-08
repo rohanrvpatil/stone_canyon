@@ -39,21 +39,24 @@ export const fetchUserDataQuestions = (dispatch: any) => {
     });
 };
 
-export const updateServiceId = (questionFunnel: string) => {
-  fetch("http://localhost:3000/update-service-id", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Question-Funnel": questionFunnel,
-    },
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(`Error: ${response.statusText}`);
-      }
-      console.log("Service ID updated successfully.");
-    })
-    .catch((error) => {
-      console.error("Failed to update service ID:", error);
+export const updateServiceId = async (questionFunnel: string) => {
+  try {
+    const response = await fetch("http://localhost:3000/update-service-id", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Question-Funnel": questionFunnel,
+      },
     });
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.statusText}`);
+    }
+
+    // Return the parsed JSON data
+    return await response.json(); // Ensure this returns the object containing serviceId
+  } catch (error) {
+    console.error("Failed to update service ID:", error);
+    return null; // You can return null or handle it based on your requirements
+  }
 };
