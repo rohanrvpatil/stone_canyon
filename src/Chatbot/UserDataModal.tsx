@@ -39,7 +39,7 @@ const UserDataModal: React.FC<UserDataModalProps> = ({
         className={styles.userDataModalButton}
         onClick={() => dispatch(onClose())}
       >
-        Close
+        Confirm
       </button>
     </div>
   );
