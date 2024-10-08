@@ -18,6 +18,7 @@ export interface ChatbotState {
   currentInput: string;
   currentInputIndex: number;
   validationMessage: string;
+  questionFunnel: string;
 }
 
 export interface ChatbotProps {

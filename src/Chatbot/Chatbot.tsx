@@ -54,6 +54,9 @@ const Chatbot: React.FC<ChatbotProps> = ({ categoryId }) => {
   const validationMessage = useSelector(
     (state: RootState) => state.chatbot.validationMessage
   );
+  const questionFunnel = useSelector(
+    (state: RootState) => state.chatbot.questionFunnel
+  );
 
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
   const [localInput, setLocalInput] = useState(currentInput);
@@ -101,7 +104,12 @@ const Chatbot: React.FC<ChatbotProps> = ({ categoryId }) => {
                     <button
                       key={option}
                       onClick={() =>
-                        handleOptionClick(dispatch, currentNode, option)
+                        handleOptionClick(
+                          dispatch,
+                          currentNode,
+                          option,
+                          questionFunnel
+                        )
                       }
                       className={styles.option}
                     >

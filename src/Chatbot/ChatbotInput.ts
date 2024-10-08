@@ -14,6 +14,7 @@ import {
   validateZipCode,
   validateFullAddress,
 } from "./userInputValidation";
+import { updateServiceId } from "../../src/Chatbot/ChatbotAPI";
 
 // redux
 import {
@@ -22,6 +23,7 @@ import {
   addMessage,
   setCurrentInputIndex,
   // setValidationMessage,
+  setQuestionFunnel,
 } from "../store/chatbotSlice";
 import { setUserData } from "../store/userSlice";
 
@@ -37,7 +39,8 @@ export const createChatbotNode = (question: string): ChatbotNode => ({
 export const handleOptionClick = (
   dispatch: any,
   currentNode: ChatbotNode | null,
-  option: string
+  option: string,
+  questionFunnel: string
 ) => {
   if (currentNode && currentNode.options[option]) {
     const nextNode = currentNode.options[option] as ChatbotNode;
@@ -71,13 +74,29 @@ export const handleOptionClick = (
 
     dispatch(setCurrentNode(nextNode));
 
+    let newQuestionFunnel = currentNode.question + " > " + option;
+
     if (
       !nextNode ||
       !nextNode.options ||
       Object.keys(nextNode.options).length === 0
     ) {
       fetchUserDataQuestions(dispatch);
+    } else {
+      newQuestionFunnel += " | ";
     }
+    dispatch(setQuestionFunnel(questionFunnel + newQuestionFunnel));
+
+    if (
+      !nextNode ||
+      !nextNode.options ||
+      Object.keys(nextNode.options).length === 0
+    ) {
+      console.log(questionFunnel + newQuestionFunnel);
+      updateServiceId(questionFunnel + newQuestionFunnel);
+    }
+
+    // console.log("Updated Question Funnel:", questionFunnel + newQuestionFunnel);
   }
 };
 

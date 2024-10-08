@@ -38,3 +38,22 @@ export const fetchUserDataQuestions = (dispatch: any) => {
       console.error("Error fetching User data questions:", error);
     });
 };
+
+export const updateServiceId = (questionFunnel: string) => {
+  fetch("http://localhost:3000/update-service-id", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Question-Funnel": questionFunnel,
+    },
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+      console.log("Service ID updated successfully.");
+    })
+    .catch((error) => {
+      console.error("Failed to update service ID:", error);
+    });
+};

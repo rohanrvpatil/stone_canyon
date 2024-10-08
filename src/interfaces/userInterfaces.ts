@@ -4,4 +4,5 @@ export interface UserData {
   phoneNumber: string;
   zipCode: string;
   fullAddress: string;
+  serviceId: number;
 }

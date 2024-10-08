@@ -6,8 +6,17 @@ import csvParser from "csv-parser";
 import bodyParser from "body-parser";
 import fs from "fs";
 
+// redux
+import store from "../../src/store";
+
 // data
 import userDataQuestions from "../data/userDataQuestions.json";
+
+// components
+import { setServiceId } from "../../src/store/userSlice";
+
+// interfaces
+import { CsvRow } from "../../src/interfaces/dataInterfaces";
 
 const app = express();
 const PORT = 3000;
@@ -85,6 +94,37 @@ app.get("/user-data-questions", async (req, res) => {
     res.json({ message: "All questions have been answered" });
     currentQuestionIndex = 0; // Reset for next session or set appropriate handling
   }
+});
+
+app.post("/update-service-id", (req, res) => {
+  const questionFunnel = req.headers["question-funnel"];
+
+  const results: CsvRow[] = [];
+
+  fs.createReadStream("../home_improvement/home_improvement.csv")
+    .pipe(csvParser())
+    .on("data", (data) => {
+      results.push(data);
+    })
+    .on("end", () => {
+      const matchingRow = results.find(
+        (row) => row["Question Funnel"] === questionFunnel
+      );
+
+      if (matchingRow) {
+        const serviceId = matchingRow["Service ID"];
+        console.log(`Service ID: ${serviceId}`);
+        store.dispatch(setServiceId({ serviceId }));
+
+        res.status(200).send("Service ID updated in state.");
+      } else {
+        res.status(404).send("No matching Question Funnel found.");
+      }
+    })
+    .on("error", (error) => {
+      console.error("Error reading CSV:", error);
+      res.status(500).send("Internal server error.");
+    });
 });
 
 app.listen(PORT, () => {
